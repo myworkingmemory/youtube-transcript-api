@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "d31564de-8f05-4ebb-bc9d-d0d70d43d253",
+    "name": "Wicked YouTube Transcript Scraper API",
+    "description": "Timestamped YouTube transcripts from the videos' own captions, via Apify. One video or up to 250 per run, nothing truncated. Every result: plain text, timestamped segments, video facts, caption-language list; SRT/WebVTT on request. $0.70 per 1,000 transcripts, no start fee, failed videos free, language listing free.\n\nGet a free Apify account and token at https://console.apify.com, set it as the collection variable `apify_token`, and send.\n\nStore page and full docs: https://apify.com/myworkingmemory/wicked-youtube-transcript-scraper-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "apify_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "One video \u2192 transcript (sync, JSON back)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?token={{apify_token}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "acts",
+            "myworkingmemory~wicked-youtube-transcript-scraper-api",
+            "run-sync-get-dataset-items"
+          ],
+          "query": [
+            {
+              "key": "token",
+              "value": "{{apify_token}}",
+              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"videoUrl\": \"https://www.youtube.com/watch?v=jNQXAC9IVRw\",\n  \"targetLanguage\": \"en\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Returns the dataset item: videoId, url, title, channel, durationSeconds, viewCount, language, captionType, availableLanguages, text (plain transcript), data (timestamped segments)."
+      },
+      "response": []
+    },
+    {
+      "name": "Batch of videos with fallback language and subtitle files",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?token={{apify_token}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "acts",
+            "myworkingmemory~wicked-youtube-transcript-scraper-api",
+            "run-sync-get-dataset-items"
+          ],
+          "query": [
+            {
+              "key": "token",
+              "value": "{{apify_token}}",
+              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"videoUrls\": [\n    \"https://www.youtube.com/watch?v=jNQXAC9IVRw\",\n    \"https://youtu.be/IELMSD2kdmk\"\n  ],\n  \"languages\": [\n    \"es\",\n    \"en\"\n  ],\n  \"outputFormats\": [\n    \"srt\",\n    \"vtt\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Up to 250 URLs or IDs per run. `languages` is a priority list; the first language the video has captions in wins. `outputFormats` adds srt/vtt text to each item at no charge. One item per delivered transcript; failed videos are not charged."
+      },
+      "response": []
+    },
+    {
+      "name": "List caption languages only (free)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync?token={{apify_token}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "acts",
+            "myworkingmemory~wicked-youtube-transcript-scraper-api",
+            "run-sync"
+          ],
+          "query": [
+            {
+              "key": "token",
+              "value": "{{apify_token}}",
+              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"videoUrls\": [\n    \"jNQXAC9IVRw\",\n    \"IELMSD2kdmk\"\n  ],\n  \"listOnly\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Returns no dataset items and charges nothing. The answer is the run's OUTPUT record: each video's facts and available caption languages. Fetch it from the run's default key-value store (`/v2/key-value-stores/{defaultKeyValueStoreId}/records/OUTPUT`)."
+      },
+      "response": []
+    },
+    {
+      "name": "Start a run asynchronously (large batches)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/runs?token={{apify_token}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "acts",
+            "myworkingmemory~wicked-youtube-transcript-scraper-api",
+            "runs"
+          ],
+          "query": [
+            {
+              "key": "token",
+              "value": "{{apify_token}}",
+              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"videoUrls\": [\n    \"https://www.youtube.com/watch?v=jNQXAC9IVRw\"\n  ],\n  \"targetLanguage\": \"en\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Returns the run object immediately. Read results later from `/v2/datasets/{defaultDatasetId}/items`."
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "n8n-nodes-wicked-youtube-transcript",
+  "version": "1.0.0",
+  "description": "n8n community node: YouTube transcripts (text, timestamped segments, SRT, WebVTT, caption languages) for any public video via the Wicked YouTube Transcript Scraper on RapidAPI.",
+  "keywords": [
+    "n8n-community-node-package",
+    "youtube",
+    "transcript",
+    "captions",
+    "subtitles",
+    "srt",
+    "rapidapi"
+  ],
+  "license": "MIT",
+  "homepage": "https://rapidapi.com/Myworkingmemory/api/wicked-youtube-transcript-scraper",
+  "author": {
+    "name": "Myworkingmemory LLC",
+    "email": "support@myworkingmemory.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myworkingmemory/youtube-transcript-api",
+    "directory": "integrations/n8n-nodes-wicked-youtube-transcript"
+  },
+  "main": "index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/WickedYouTubeTranscriptApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/WickedYouTubeTranscript/WickedYouTubeTranscript.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "^1.70.0",
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

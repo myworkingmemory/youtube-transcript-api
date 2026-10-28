@@ -1,0 +1,6 @@
+node_modules/
+dist/
+!integrations/n8n-nodes-wicked-youtube-transcript/dist/
+__pycache__/
+*.zip
+.DS_Store

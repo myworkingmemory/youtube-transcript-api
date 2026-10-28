@@ -1,0 +1,291 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "Wicked YouTube Transcript Scraper",
+  "version": "1.0.0",
+  "description": "Timestamped transcripts of public YouTube videos from their own caption tracks: plain text, segments, SRT, WebVTT, video facts and the caption-language list. Failures are never billed.",
+  "termsOfService": "https://www.myworkingmemory.ai/api-terms.html",
+  "contact": {
+   "name": "Myworkingmemory LLC",
+   "email": "support@myworkingmemory.ai",
+   "url": "https://www.myworkingmemory.ai"
+  }
+ },
+ "servers": [
+  {
+   "url": "https://wicked-youtube-transcript-scraper.p.rapidapi.com"
+  }
+ ],
+ "security": [
+  {
+   "RapidAPIKey": [],
+   "RapidAPIHost": []
+  }
+ ],
+ "components": {
+  "securitySchemes": {
+   "RapidAPIKey": {
+    "type": "apiKey",
+    "in": "header",
+    "name": "X-RapidAPI-Key"
+   },
+   "RapidAPIHost": {
+    "type": "apiKey",
+    "in": "header",
+    "name": "X-RapidAPI-Host",
+    "description": "Always wicked-youtube-transcript-scraper.p.rapidapi.com"
+   }
+  },
+  "schemas": {
+   "Transcript": {
+    "type": "object",
+    "properties": {
+     "videoId": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     },
+     "channel": {
+      "type": "string"
+     },
+     "durationSeconds": {
+      "type": "number"
+     },
+     "language": {
+      "type": "string"
+     },
+     "captionType": {
+      "type": "string",
+      "enum": [
+       "manual",
+       "auto"
+      ]
+     },
+     "text": {
+      "type": "string"
+     },
+     "data": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "start": {
+         "type": "number"
+        },
+        "dur": {
+         "type": "number"
+        },
+        "text": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "srt": {
+      "type": "string"
+     },
+     "vtt": {
+      "type": "string"
+     },
+     "availableLanguages": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        },
+        "kind": {
+         "type": "string"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "paths": {
+  "/transcript": {
+   "get": {
+    "summary": "Transcript of one video",
+    "operationId": "getTranscript",
+    "parameters": [
+     {
+      "name": "url",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "YouTube URL (watch, youtu.be, Shorts, embed, live) or 11-character video ID",
+      "example": "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+     },
+     {
+      "name": "lang",
+      "in": "query",
+      "schema": {
+       "type": "string"
+      },
+      "description": "ISO 639-1 code or priority list such as es,en",
+      "example": "en"
+     },
+     {
+      "name": "captionType",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "any",
+        "manual",
+        "auto"
+       ],
+       "default": "any"
+      }
+     },
+     {
+      "name": "format",
+      "in": "query",
+      "schema": {
+       "type": "string"
+      },
+      "description": "srt, vtt or srt,vtt to include subtitle text"
+     },
+     {
+      "name": "segments",
+      "in": "query",
+      "schema": {
+       "type": "boolean",
+       "default": true
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "One transcript. Billed 1.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "": "#/components/schemas/Transcript"
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "No captions, or the requested language is missing (available languages listed). Not billed."
+     },
+     "400": {
+      "description": "Bad URL. Not billed."
+     }
+    }
+   }
+  },
+  "/languages": {
+   "get": {
+    "summary": "Caption languages and video facts (free)",
+    "operationId": "getLanguages",
+    "parameters": [
+     {
+      "name": "url",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Languages and facts. Billed 0."
+     }
+    }
+   }
+  },
+  "/transcripts": {
+   "post": {
+    "summary": "Up to 25 videos in one call",
+    "operationId": "getTranscripts",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "urls"
+        ],
+        "properties": {
+         "urls": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          },
+          "maxItems": 25
+         },
+         "lang": {
+          "type": "string"
+         },
+         "captionType": {
+          "type": "string"
+         },
+         "format": {
+          "type": "string"
+         },
+         "segments": {
+          "type": "boolean"
+         }
+        }
+       },
+       "example": {
+        "urls": [
+         "jNQXAC9IVRw",
+         "https://youtu.be/IELMSD2kdmk"
+        ],
+        "lang": "en"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Billed one per delivered transcript.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "requested": {
+           "type": "integer"
+          },
+          "delivered": {
+           "type": "integer"
+          },
+          "items": {
+           "type": "array",
+           "items": {
+            "": "#/components/schemas/Transcript"
+           }
+          },
+          "failed": {
+           "type": "array"
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "More than 25 URLs. Nothing billed."
+     }
+    }
+   }
+  }
+ }
+}

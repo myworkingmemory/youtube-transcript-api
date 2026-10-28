@@ -1,0 +1,44 @@
+{
+  "name": "wicked-youtube-transcript",
+  "version": "1.0.0",
+  "description": "YouTube transcript API client: timestamped transcripts, SRT, WebVTT, caption languages and video facts for any public video, via RapidAPI. No YouTube API key.",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "captions",
+    "subtitles",
+    "srt",
+    "vtt",
+    "youtube-transcript",
+    "youtube-captions",
+    "speech-to-text",
+    "llm",
+    "rag",
+    "rapidapi"
+  ],
+  "license": "MIT",
+  "author": "Myworkingmemory LLC <support@myworkingmemory.ai> (https://www.myworkingmemory.ai)",
+  "homepage": "https://rapidapi.com/Myworkingmemory/api/wicked-youtube-transcript-scraper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myworkingmemory/youtube-transcript-api",
+    "directory": "packages/npm"
+  },
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "types": "./src/index.d.ts",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

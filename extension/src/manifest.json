@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Transcript: copy, download SRT, any language",
+  "short_name": "YouTube Transcript",
+  "version": "1.0.0",
+  "description": "Get the transcript of the YouTube video you are watching: plain text, timestamps, SRT or WebVTT, any caption language. Uses your own free RapidAPI key.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["https://wicked-youtube-transcript-scraper.p.rapidapi.com/*"],
+  "action": { "default_popup": "popup.html", "default_title": "Get this video's transcript", "default_icon": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" } },
+  "options_page": "options.html",
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+}

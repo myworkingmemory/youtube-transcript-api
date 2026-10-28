@@ -1,0 +1,1 @@
+{ "name": "youtube-transcript-extension", "private": true, "type": "module", "scripts": { "test": "node --test", "zip": "cd src && zip -qr ../youtube-transcript-extension.zip . -x '.*' && cd .. && ls -l youtube-transcript-extension.zip" } }
