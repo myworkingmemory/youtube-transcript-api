@@ -4,7 +4,7 @@ Requires apify-client 3.4+ (run_timeout takes datetime.timedelta).
 Set APIFY_TOKEN locally. Set APIFY_RUN_ID to resume an existing run without
 starting another; leave it unset only when authorizing a new paid run.
 
-Current transcript fees per 1,000: Free/Bronze $3, Silver $2.70, Gold+ $2.40.
+Current transcript fees per 1,000: Free/Starter $3, Scale $2.70, Business $2.40.
 Each started run also charges $0.00005 per allocated GB (minimum 1 GB).
 The explicit $0.01 event ceiling below is not an all-services/account budget
 or a failed-run refund. At 4096 MB, the start event is $0.0002.

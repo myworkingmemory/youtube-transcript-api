@@ -24,9 +24,9 @@ Use your own Apify account. Current delivered-transcript event prices per **1,00
 
 | Your Apify plan | Delivered transcripts | 250 delivered + one 4 GB start |
 | --- | ---: | ---: |
-| Free / Bronze | $3.00 | $0.7502 |
-| Silver | $2.70 | $0.6752 |
-| Gold and higher | $2.40 | $0.6002 |
+| Free / Starter | $3.00 | $0.7502 |
+| Scale | $2.70 | $0.6752 |
+| Business | $2.40 | $0.6002 |
 
 Every started run has an `apify-actor-start` event: **$0.00005 × allocated RAM in GB, minimum 1 GB**. The current 4 GB default therefore adds $0.0002 per start. For one delivered transcript plus one 4 GB start, the event totals are $0.0032 / $0.0029 / $0.0026 respectively. These examples cover transcript and start events, not every provider or workflow cost. More RAM and additional starts increase the start charge.
 

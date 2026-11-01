@@ -12,3 +12,7 @@
 
 ## 2026-10-27
 - Apify actor live at $0.70 per 1,000 transcripts, up to 250 videos per run, SRT and WebVTT output.
+
+## 2026-10-31 — Apify plan-label correction
+
+- Matched the current Apify Store labels: Free/Starter, Scale and Business. Transcript rates, RAM-based Actor-start pricing and request contracts are unchanged.
