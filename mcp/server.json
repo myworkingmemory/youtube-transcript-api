@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.myworkingmemory/wicked-youtube-transcript",
-  "description": "Timestamped transcripts, SRT, WebVTT, caption languages and video facts for any public YouTube video, up to 250 per run, $0.70 per 1,000 via Apify (failures free).",
+  "description": "YouTube Transcripts & Research: available captions, timestamps and SRT/WebVTT for public videos.",
   "repository": { "url": "https://github.com/myworkingmemory/youtube-transcript-api", "source": "github" },
   "version": "1.0.0",
   "websiteUrl": "https://apify.com/myworkingmemory/wicked-youtube-transcript-scraper-api",

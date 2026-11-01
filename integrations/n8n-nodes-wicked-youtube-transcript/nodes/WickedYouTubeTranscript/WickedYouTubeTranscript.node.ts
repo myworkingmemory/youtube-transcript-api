@@ -11,7 +11,7 @@ export class WickedYouTubeTranscript implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"]}}',
-		description: 'Transcript, timestamped segments, SRT, WebVTT and caption languages of any public YouTube video (Wicked YouTube Transcript Scraper on RapidAPI)',
+		description: 'Existing captions, timestamps, SRT/WebVTT and caption languages for supported public YouTube videos with available captions, via RapidAPI; current RapidAPI plans apply',
 		defaults: { name: 'YouTube Transcript' },
 		inputs: ['main'],
 		outputs: ['main'],

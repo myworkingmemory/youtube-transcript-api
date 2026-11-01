@@ -1,20 +1,39 @@
 {
   "info": {
     "_postman_id": "d31564de-8f05-4ebb-bc9d-d0d70d43d253",
-    "name": "Wicked YouTube Transcript Scraper API",
-    "description": "Timestamped YouTube transcripts from the videos' own captions, via Apify. One video or up to 250 per run, nothing truncated. Every result: plain text, timestamped segments, video facts, caption-language list; SRT/WebVTT on request. $0.70 per 1,000 transcripts, no start fee, failed videos free, language listing free.\n\nGet a free Apify account and token at https://console.apify.com, set it as the collection variable `apify_token`, and send.\n\nStore page and full docs: https://apify.com/myworkingmemory/wicked-youtube-transcript-scraper-api",
+    "name": "YouTube Transcripts & Research — YouTube Transcript API",
+    "description": "YouTube Transcripts & Research uses the Wicked YouTube Transcript Scraper API.\n\nRetrieve existing captions from supplied public YouTube videos as text and timestamped segments, with optional source video facts and SRT/WebVTT. Up to 250 video URLs or IDs per Apify Actor run; caption availability and failures affect delivery. Read diagnostics and all delivered rows. Apify pricing per 1,000 delivered transcripts: Free/Bronze $3, Silver $2.70, Gold and higher $2.40. Each started run also incurs the automatic apify-actor-start charge of $0.00005 multiplied by allocated RAM in GB, with a 1 GB minimum. Failed runs and language-only checks may incur that start charge; no delivered-transcript fee applies without a delivered transcript. For 250 delivered transcripts in one run using at most 1 GB, event charges total $0.75005 on Free/Bronze, $0.67505 on Silver, or $0.60005 on Gold and higher. More allocated RAM or additional starts increase the start charge. Review current Apify pricing before running. SRT/WebVTT adds no separate result event fee. No audio transcription or translation.\n\nSet apify_token locally to your own Apify API token. The collection sends Authorization: Bearer {{apify_token}}; all token defaults and saved run/storage identifiers are blank. Never commit credentials.\n\nSend an explicitly authorized positive maxTotalChargeUsd on every paid start; the examples use $0.01, timeout=300 seconds and memory=4096 MB (4 GB). The native provider parameters are optional; omission uses provider/Actor settings rather than the example values. This per-run setting is not an account-wide or all-services budget: other runs, model/automation charges and later storage/API usage are separate. Do not treat it as a guaranteed all-in invoice ceiling or a refund for a failed run. At 4096 MB the Actor-start event is four units ($0.0002); it may apply even when no transcript is delivered. A $0.01 example budget may stop a larger batch before every requested video is delivered.\n\nPrefer the asynchronous start when you need a durable run ID. Retain data.id, data.defaultDatasetId and data.defaultKeyValueStoreId from its response. A start acknowledgement is not successful delivery. Read the existing run until it is terminal, then reconcile OUTPUT diagnostics and all dataset pages. A synchronous connection can time out or disconnect after a run has started; inspect that existing run in Apify rather than automatically repeating a paid POST. Read-only requests below do not start another Actor; normal provider storage/API usage can still apply.\n\nThe first four POST requests are paid alternatives, not a sequence: choose one authorized start once. Do not run this entire collection with a runner. For a recoverable flow, choose the asynchronous start and copy data.id, data.defaultDatasetId and data.defaultKeyValueStoreId into run_id, dataset_id and key_value_store_id. Then use only the three GET requests to check status and read saved output/pages. No request scripts start work, poll automatically, or retry paid requests.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "apify_token",
       "value": "",
-      "type": "string"
+      "type": "string",
+      "description": "Your own Apify API token. Set locally; no default or saved credential."
+    },
+    {
+      "key": "run_id",
+      "value": "",
+      "type": "string",
+      "description": "Copy data.id from the single asynchronous start response."
+    },
+    {
+      "key": "dataset_id",
+      "value": "",
+      "type": "string",
+      "description": "Copy data.defaultDatasetId from that existing run."
+    },
+    {
+      "key": "key_value_store_id",
+      "value": "",
+      "type": "string",
+      "description": "Copy data.defaultKeyValueStoreId from that existing run."
     }
   ],
   "item": [
     {
-      "name": "One video \u2192 transcript (sync, JSON back)",
+      "name": "One video → transcript (sync, JSON back)",
       "request": {
         "method": "POST",
         "header": [
@@ -24,7 +43,7 @@
           }
         ],
         "url": {
-          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?token={{apify_token}}",
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?maxTotalChargeUsd=0.01&timeout=300&memory=4096",
           "protocol": "https",
           "host": [
             "api",
@@ -39,9 +58,19 @@
           ],
           "query": [
             {
-              "key": "token",
-              "value": "{{apify_token}}",
-              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+              "key": "maxTotalChargeUsd",
+              "value": "0.01",
+              "description": "Explicit authorized USD run-charge example. Not an account-wide/all-services budget or a refund."
+            },
+            {
+              "key": "timeout",
+              "value": "300",
+              "description": "Actor runtime bound in seconds."
+            },
+            {
+              "key": "memory",
+              "value": "4096",
+              "description": "Explicit 4 GB allocation; four Actor-start event units ($0.0002)."
             }
           ]
         },
@@ -54,7 +83,7 @@
             }
           }
         },
-        "description": "Returns the dataset item: videoId, url, title, channel, durationSeconds, viewCount, language, captionType, availableLanguages, text (plain transcript), data (timestamped segments)."
+        "description": "Returns the dataset item: videoId, url, title, channel, durationSeconds, viewCount, language, captionType, availableLanguages, text (plain transcript), data (timestamped segments).\n\nSend an explicitly authorized positive maxTotalChargeUsd on every paid start; the examples use $0.01, timeout=300 seconds and memory=4096 MB (4 GB). The native provider parameters are optional; omission uses provider/Actor settings rather than the example values. This per-run setting is not an account-wide or all-services budget: other runs, model/automation charges and later storage/API usage are separate. Do not treat it as a guaranteed all-in invoice ceiling or a refund for a failed run. At 4096 MB the Actor-start event is four units ($0.0002); it may apply even when no transcript is delivered. A $0.01 example budget may stop a larger batch before every requested video is delivered.\n\nPrefer the asynchronous start when you need a durable run ID. Retain data.id, data.defaultDatasetId and data.defaultKeyValueStoreId from its response. A start acknowledgement is not successful delivery. Read the existing run until it is terminal, then reconcile OUTPUT diagnostics and all dataset pages. A synchronous connection can time out or disconnect after a run has started; inspect that existing run in Apify rather than automatically repeating a paid POST. Read-only requests below do not start another Actor; normal provider storage/API usage can still apply."
       },
       "response": []
     },
@@ -69,7 +98,7 @@
           }
         ],
         "url": {
-          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?token={{apify_token}}",
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync-get-dataset-items?maxTotalChargeUsd=0.01&timeout=300&memory=4096",
           "protocol": "https",
           "host": [
             "api",
@@ -84,9 +113,19 @@
           ],
           "query": [
             {
-              "key": "token",
-              "value": "{{apify_token}}",
-              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+              "key": "maxTotalChargeUsd",
+              "value": "0.01",
+              "description": "Explicit authorized USD run-charge example. Not an account-wide/all-services budget or a refund."
+            },
+            {
+              "key": "timeout",
+              "value": "300",
+              "description": "Actor runtime bound in seconds."
+            },
+            {
+              "key": "memory",
+              "value": "4096",
+              "description": "Explicit 4 GB allocation; four Actor-start event units ($0.0002)."
             }
           ]
         },
@@ -99,12 +138,12 @@
             }
           }
         },
-        "description": "Up to 250 URLs or IDs per run. `languages` is a priority list; the first language the video has captions in wins. `outputFormats` adds srt/vtt text to each item at no charge. One item per delivered transcript; failed videos are not charged."
+        "description": "Up to 250 URLs or IDs per Actor run. Lists above 250 are rejected before extraction. languages selects existing tracks in priority order; outputFormats adds srt/vtt text with no separate result event fee. Each delivered transcript incurs its plan-tier event fee. Failed sources have no delivered-transcript fee, but a started run incurs the RAM-based apify-actor-start charge. Check diagnostics and all delivered rows.\n\nSend an explicitly authorized positive maxTotalChargeUsd on every paid start; the examples use $0.01, timeout=300 seconds and memory=4096 MB (4 GB). The native provider parameters are optional; omission uses provider/Actor settings rather than the example values. This per-run setting is not an account-wide or all-services budget: other runs, model/automation charges and later storage/API usage are separate. Do not treat it as a guaranteed all-in invoice ceiling or a refund for a failed run. At 4096 MB the Actor-start event is four units ($0.0002); it may apply even when no transcript is delivered. A $0.01 example budget may stop a larger batch before every requested video is delivered.\n\nPrefer the asynchronous start when you need a durable run ID. Retain data.id, data.defaultDatasetId and data.defaultKeyValueStoreId from its response. A start acknowledgement is not successful delivery. Read the existing run until it is terminal, then reconcile OUTPUT diagnostics and all dataset pages. A synchronous connection can time out or disconnect after a run has started; inspect that existing run in Apify rather than automatically repeating a paid POST. Read-only requests below do not start another Actor; normal provider storage/API usage can still apply."
       },
       "response": []
     },
     {
-      "name": "List caption languages only (free)",
+      "name": "List caption languages only (no transcript event fee)",
       "request": {
         "method": "POST",
         "header": [
@@ -114,7 +153,7 @@
           }
         ],
         "url": {
-          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync?token={{apify_token}}",
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/run-sync?maxTotalChargeUsd=0.01&timeout=300&memory=4096",
           "protocol": "https",
           "host": [
             "api",
@@ -129,9 +168,19 @@
           ],
           "query": [
             {
-              "key": "token",
-              "value": "{{apify_token}}",
-              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+              "key": "maxTotalChargeUsd",
+              "value": "0.01",
+              "description": "Explicit authorized USD run-charge example. Not an account-wide/all-services budget or a refund."
+            },
+            {
+              "key": "timeout",
+              "value": "300",
+              "description": "Actor runtime bound in seconds."
+            },
+            {
+              "key": "memory",
+              "value": "4096",
+              "description": "Explicit 4 GB allocation; four Actor-start event units ($0.0002)."
             }
           ]
         },
@@ -144,7 +193,7 @@
             }
           }
         },
-        "description": "Returns no dataset items and charges nothing. The answer is the run's OUTPUT record: each video's facts and available caption languages. Fetch it from the run's default key-value store (`/v2/key-value-stores/{defaultKeyValueStoreId}/records/OUTPUT`)."
+        "description": "Returns no transcript dataset rows or delivered-transcript event fee. A started run still incurs the RAM-based apify-actor-start charge. Read available tracks and optional source facts from OUTPUT in the run's default key-value store (/v2/key-value-stores/{defaultKeyValueStoreId}/records/OUTPUT).\n\nSend an explicitly authorized positive maxTotalChargeUsd on every paid start; the examples use $0.01, timeout=300 seconds and memory=4096 MB (4 GB). The native provider parameters are optional; omission uses provider/Actor settings rather than the example values. This per-run setting is not an account-wide or all-services budget: other runs, model/automation charges and later storage/API usage are separate. Do not treat it as a guaranteed all-in invoice ceiling or a refund for a failed run. At 4096 MB the Actor-start event is four units ($0.0002); it may apply even when no transcript is delivered. A $0.01 example budget may stop a larger batch before every requested video is delivered.\n\nPrefer the asynchronous start when you need a durable run ID. Retain data.id, data.defaultDatasetId and data.defaultKeyValueStoreId from its response. A start acknowledgement is not successful delivery. Read the existing run until it is terminal, then reconcile OUTPUT diagnostics and all dataset pages. A synchronous connection can time out or disconnect after a run has started; inspect that existing run in Apify rather than automatically repeating a paid POST. Read-only requests below do not start another Actor; normal provider storage/API usage can still apply."
       },
       "response": []
     },
@@ -159,7 +208,7 @@
           }
         ],
         "url": {
-          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/runs?token={{apify_token}}",
+          "raw": "https://api.apify.com/v2/acts/myworkingmemory~wicked-youtube-transcript-scraper-api/runs?maxTotalChargeUsd=0.01&timeout=300&memory=4096",
           "protocol": "https",
           "host": [
             "api",
@@ -174,9 +223,19 @@
           ],
           "query": [
             {
-              "key": "token",
-              "value": "{{apify_token}}",
-              "description": "Your Apify API token (console.apify.com \u2192 Settings \u2192 API & Integrations)"
+              "key": "maxTotalChargeUsd",
+              "value": "0.01",
+              "description": "Explicit authorized USD run-charge example. Not an account-wide/all-services budget or a refund."
+            },
+            {
+              "key": "timeout",
+              "value": "300",
+              "description": "Actor runtime bound in seconds."
+            },
+            {
+              "key": "memory",
+              "value": "4096",
+              "description": "Explicit 4 GB allocation; four Actor-start event units ($0.0002)."
             }
           ]
         },
@@ -189,9 +248,124 @@
             }
           }
         },
-        "description": "Returns the run object immediately. Read results later from `/v2/datasets/{defaultDatasetId}/items`."
+        "description": "Returns the run object immediately. Read results later from `/v2/datasets/{defaultDatasetId}/items`.\n\nSend an explicitly authorized positive maxTotalChargeUsd on every paid start; the examples use $0.01, timeout=300 seconds and memory=4096 MB (4 GB). The native provider parameters are optional; omission uses provider/Actor settings rather than the example values. This per-run setting is not an account-wide or all-services budget: other runs, model/automation charges and later storage/API usage are separate. Do not treat it as a guaranteed all-in invoice ceiling or a refund for a failed run. At 4096 MB the Actor-start event is four units ($0.0002); it may apply even when no transcript is delivered. A $0.01 example budget may stop a larger batch before every requested video is delivered.\n\nPrefer the asynchronous start when you need a durable run ID. Retain data.id, data.defaultDatasetId and data.defaultKeyValueStoreId from its response. A start acknowledgement is not successful delivery. Read the existing run until it is terminal, then reconcile OUTPUT diagnostics and all dataset pages. A synchronous connection can time out or disconnect after a run has started; inspect that existing run in Apify rather than automatically repeating a paid POST. Read-only requests below do not start another Actor; normal provider storage/API usage can still apply."
+      },
+      "response": []
+    },
+    {
+      "name": "Read an existing run status (no new Actor start)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/actor-runs/{{run_id}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "actor-runs",
+            "{{run_id}}"
+          ]
+        },
+        "description": "Set run_id to data.id from the already-started run. READY/RUNNING are not completion. Recheck this same GET with backoff until terminal; keep the returned defaultDatasetId/defaultKeyValueStoreId. Never repeat a paid start merely to check progress. Normal provider usage can apply."
+      },
+      "response": []
+    },
+    {
+      "name": "Read saved OUTPUT diagnostics or language listing",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/key-value-stores/{{key_value_store_id}}/records/OUTPUT",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "key-value-stores",
+            "{{key_value_store_id}}",
+            "records",
+            "OUTPUT"
+          ]
+        },
+        "description": "Use the existing run's data.defaultKeyValueStoreId. Returns the raw JSON OUTPUT record, including language-only results or batch delivered/failed diagnostics. This request does not start extraction or produce a new transcript event. Normal provider storage/API usage can apply."
+      },
+      "response": []
+    },
+    {
+      "name": "Read saved transcript rows (page 1; reuse dataset ID)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.apify.com/v2/datasets/{{dataset_id}}/items?format=json&offset=0&limit=20&clean=false",
+          "protocol": "https",
+          "host": [
+            "api",
+            "apify",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "datasets",
+            "{{dataset_id}}",
+            "items"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "json"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "clean",
+              "value": "false"
+            }
+          ]
+        },
+        "description": "Use the existing run's data.defaultDatasetId. Start at offset=0 and limit=20, then advance offset by the rows returned until all saved rows are read. Use clean=false for unfiltered row counts; clean=true can omit rows. Reconcile all delivered IDs and failures with OUTPUT. This GET never starts a replacement run. Normal provider storage/API usage can apply."
       },
       "response": []
     }
-  ]
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apify_token}}",
+        "type": "string"
+      }
+    ]
+  }
 }

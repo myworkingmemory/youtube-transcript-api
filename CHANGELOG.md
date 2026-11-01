@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Search documentation update
+
+- Current Apify pricing is $3.00 / $2.70 / $2.40 per 1,000 delivered transcripts by plan, plus the RAM-based Actor-start event. Older release prices below are historical.
+- Aligned product identity, caption-availability limits, bounded starts, saved-result reads and public documentation.
+- Source integrations are distinct from verified package/store publication.
+
 ## 2026-10-28
 - RapidAPI listing public: GET /transcript, GET /languages (free), POST /transcripts (25 per call). Plans from $0 (50 a month) to $39.99 (35,000).
 - Direct caption path with Apify fallback; failed videos never billed.
