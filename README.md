@@ -4,6 +4,8 @@ Turn supplied YouTube links into readable transcripts, timestamped source passag
 
 **Live product:** [product, pricing and saved sample](https://www.myworkingmemory.ai/wicked-youtube-transcript-api.html) · [run on Apify](https://apify.com/myworkingmemory/wicked-youtube-transcript-scraper-api) · [OpenAPI](https://www.myworkingmemory.ai/apis/wicked-youtube-transcript-scraper-api.openapi.json) · [Postman collection](https://www.myworkingmemory.ai/apis/wicked-youtube-transcript-scraper-api.postman_collection.json).
 
+[Agent workflow guide](https://www.myworkingmemory.ai/youtube-transcripts-research/agent-workflows.md): caption controls, bounded batches, saved-run recovery and subtitle exports. [Compare APIs and published billing](https://www.myworkingmemory.ai/youtube-transcripts-research/compare.html).
+
 ## See what you get before starting a run
 
 [Open the saved JSON excerpt](https://www.myworkingmemory.ai/youtube-transcripts-research/sample.json). It contains one short segment from a caption result captured on October 30, 2026, with source metadata and timing. It is an excerpt, not a complete payload or a fresh availability check. Reading this static example needs no credentials and starts no extraction.
@@ -79,7 +81,7 @@ Example request: **“Use the available English captions for these supplied vide
 
 First retrieve the captions. Then ask the host to read all required text/segment pages, distinguish source statements from its synthesis, and make links from the returned video URL and actual segment start time. A timestamp link has the form `https://www.youtube.com/watch?v=VIDEO_ID&t=SECONDSs`. Do not cite unread sources or substitute search snippets for the complete passages needed by the task.
 
-For compatible developer clients, the [Apify-hosted MCP endpoint](https://mcp.apify.com/?tools=myworkingmemory/wicked-youtube-transcript-scraper-api) exposes the Actor. Connect your own account, inspect the actual discovered tool schema and current pricing, then pass the intended input and cost controls. A connection alone is not a reason to start a paid extraction.
+For compatible developer clients, the [Apify-hosted MCP endpoint](https://mcp.apify.com/?tools=myworkingmemory/wicked-youtube-transcript-scraper-api) exposes the Actor. Connect your own account, inspect the actual discovered tool schema and current pricing, then pass the intended input and only controls that schema actually exposes. If it lacks enforceable charge, timeout or memory controls, use the bounded REST route in the agent guide. A connection alone is not a reason to start a paid extraction.
 
 The **YouTube Transcripts & Research OpenAI directory release is under review as of October 31, 2026**. This is not a claim of public directory installation. The live routes above remain Apify/API and compatible MCP clients; each host's installation and full-use acceptance is checked separately.
 
